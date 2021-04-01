@@ -17,8 +17,35 @@ import random
 
 
 def main():
+    
+    #Initalize paramters
+    n = 2  #Dimesions
+    delta_t = 0.05 #TimeStep
+    Lambda = 8.5 #Scaling factor  of attractive potential field
+    pr_max = 50 #Max robot velocity
+    t = np.arange(0,10,delta_t) #Total simulation time
+    
+    #Set Virtual Target
+    qv = np.zeros((len(t), n)) #Initial positions of virtual target
+    pv = 1.2 #Velocity of virtual target
+    theta_t = np.zeros((len(t), 1)) #Initial heading of virtual target
+    
+    #Set ROBOT
+    qr = np.zeros((len(t), n)) #Initial positon of robot
+    pr = np.zeros((len(t), 1)) #Intiial velocity of robot
+    theta_r = np.zeros((len(t), 1)) #Initial heading of the robot 
 
-    print("Hello Wdorld")
+    #Set Relative states between robot and target
+    qrv = np.zeros((len(t), n)) #Relative position between robot and target
+    prv = np.zeros((len(t), n)) #Realative velocity between robot and target 
+    #qrv[0] = [9,4], row 0 
+
+    #Compute initial relative states between robot and target
+    qrv[0] = qv[0] - qr[0]
+    #Compute initial relative velocity
+    
+
+
     
 
     
