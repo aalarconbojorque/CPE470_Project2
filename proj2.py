@@ -43,17 +43,28 @@ def main():
     #Compute initial relative states between robot and target
     qrv[0] = qv[0] - qr[0]
     #Compute initial relative velocity
-    #cos_theta = np.cos(self.odo_o)
-    cos_t = np.cos(theta_t[0])
-    cos_r = np.cos(theta_r[0])
-    sin_t = np.sin(theta_t[0])
-    sin_r = np.sin(theta_r[0])
-    init_r = pr[0]
-    left_s = pv*cos_t - init_r*cos_r
-    right_s = pv*sin_t - init_r*sin_r
-    #y = np.array([left_s, right_s]).reshape(2,)
-    y = np.array([pv*np.cos(theta_t[0]) - pr[0]*np.cos(theta_r[0]), pv*np.sin(theta_t[0]) - pr[0]*np.sin(theta_r[0])]).reshape(2,)
-    prv[0] = y
+    prv[0]  = np.array([pv*np.cos(theta_t[0]) - pr[0]*np.cos(theta_r[0]), 
+        pv*np.sin(theta_t[0]) - pr[0]*np.sin(theta_r[0])]).reshape(2,)
+ 
+    #Set noise mean and standard deviation 
+    noise_mean = 0.5
+    noise_std = 0.5
+
+    #Set Virtual Target Data
+    for index, item in enumerate(qrv, start=0):   
+        if index == 0:
+            pass
+        else :
+            #Set circular target tragectory (position)
+            qv_x = 60 - 15 * np.cos(t[index])
+            qv_y = 30 + 15 * np.sin(t[index])
+            qrv[index] = np.array([qv_x, qv_y]).reshape(2,)
+
+            #Set heading of virtual target
+            theta_t[index] = np.arctan2(qv_y, qv_x)
+
+
+            print(qrv[index], theta_t[index], index)
     print(prv[0])
 
 
