@@ -57,9 +57,14 @@ def main():
         if index == 0:
             pass
         else :
-            #Set circular target tragectory (position)
-            qv_x = 60 - 15 * np.cos(t[index])
-            qv_y = 30 + 15 * np.sin(t[index])
+            # #Set circular target tragectory (position)
+            # qv_x = 60 - 15 * np.cos(t[index])
+            # qv_y = 30 + 15 * np.sin(t[index])
+            # qv[index] = np.array([qv_x, qv_y]).reshape(2,)
+
+            #Set linear target tragectory (position)
+            qv_x = 60 - 15 * t[index]
+            qv_y = 30 + 15 * t[index]
             qv[index] = np.array([qv_x, qv_y]).reshape(2,)
 
             #Set heading of virtual target
