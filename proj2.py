@@ -14,7 +14,6 @@ import numpy.matlib as m
 import numpy as np
 import math
 import random
-import matplotlib.pyplot as plt
 
 
 def main():
@@ -42,7 +41,6 @@ def main():
     #Set Relative states between robot and target
     qrv = np.zeros((len(t), n)) #Relative position between robot and target
     prv = np.zeros((len(t), n)) #Realative velocity between robot and target 
-    #qrv[0] = [9,4], row 0 
 
     #Compute initial relative states between robot and target
     qrv[0] = qv[0] - qr[0]
@@ -103,49 +101,49 @@ def main():
 
 
     #Write error data to a file
-    f = open("error.txt", "w")
-    
+    f = open("error.txt", "w")  
     for index, item in enumerate(qrv, start=0):  
         #X|Y|HEADING|VELOCITY 
-        f.write(str(err[index][0]) + '\n')
-    
+        f.write(str(err[index][0]) + '\n')  
     f.close()
             
-
-
     #Write robot data to a file
-    f = open("robotPath.txt", "w")
-    
+    f = open("robotPath.txt", "w") 
     for index, item in enumerate(qrv, start=0):  
         #X|Y|HEADING|VELOCITY 
-        f.write(str(qr[index][0]) + '|' + str(qr[index][1]) + '|' + str(theta_r[index][0]) + '|' + str(pr[index][0]) + '\n')
-    
+        f.write(str(qr[index][0]) + '|' + str(qr[index][1]) + '|' + str(theta_r[index][0]) + '|' + str(pr[index][0]) + '\n')  
     f.close()
 
     #Write target data to a file
-    f = open("targetPath.txt", "w")
-    
+    f = open("targetPath.txt", "w")    
     for index, item in enumerate(qrv, start=0):   
-        f.write(str(qv[index][0]) + '|' + str(qv[index][1]) + '|' + str(theta_t[index][0]) + '\n')
-    
+        f.write(str(qv[index][0]) + '|' + str(qv[index][1]) + '|' + str(theta_t[index][0]) + '\n')  
     f.close()    
-   
   
     print("Data for target, robot and error written")
 
-
+# ----------------------------------------------------------------------------
+# FUNCTION NAME:     CompMagSqr()
+# PURPOSE:           Computes the magnitude squared
+# -----------------------------------------------------------------------------
 def CompMagSqr(vec):
     #Compute magnitued
     vec = np.linalg.norm(vec)
     #Compute squared
     vec = np.square(vec)
     return vec
-
+# ----------------------------------------------------------------------------
+# FUNCTION NAME:     CompMag()
+# PURPOSE:           Computes the magnitude 
+# -----------------------------------------------------------------------------
 def CompMag(vec):
     #Compute magnitued
     vec = np.linalg.norm(vec)
     return vec
-
+# ----------------------------------------------------------------------------
+# FUNCTION NAME:     CosSub()
+# PURPOSE:           Subtracts two values, takes the cos and returns abs val
+# -----------------------------------------------------------------------------
 def CosSub(theta_1, theta_2):
     theta_3 = np.cos(theta_1 - theta_2)
     theta_3 = np.absolute(theta_3)
