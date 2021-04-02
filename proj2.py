@@ -73,13 +73,14 @@ def main():
             pass
         else :
             #Compute relative y pos V - R
-            yrv = qv[index][1] - qr[index][1]
+            yrv = qv[index][1] - qr[index-1][1]
             #Compute relative x pos V - R
-            xrv = qv[index][0] - qr[index][0]
+            xrv = qv[index][0] - qr[index-1][0]
             #Compute relative heading
             Hrv = np.arctan2(yrv, xrv)
             #Compute relative position
-            qrv[index] = qv[index] - qr[index]
+            qrv[index] = qv[index] - qr[index-1]
+            print(qr[index-1])
             
             #Compute velocity of the robot
             V_Left = CompMagSqr(pv)
@@ -101,10 +102,10 @@ def main():
             #print(qv[index][1], theta_t[index][0], index)
 
 
-    f = open("output.txt", "a+")
+    f = open("output.txt", "w")
     
     for index, item in enumerate(qrv, start=0):   
-        f.write(str(qrv[index][0]) + '|' + str(qrv[index][1]) + '|' + str(theta_r[index][0]) + '\n')
+        f.write(str(qr[index][0]) + '|' + str(qr[index][1]) + '|' + str(theta_r[index][0]) + '\n')
     
     f.close()   
 
