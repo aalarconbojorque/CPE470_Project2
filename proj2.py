@@ -80,7 +80,7 @@ def main():
             Hrv = np.arctan2(yrv, xrv)
             #Compute relative position
             qrv[index] = qv[index] - qr[index-1]
-            print(qr[index-1])
+           # print(qr[index-1])
             
             #Compute velocity of the robot
             V_Left = CompMagSqr(pv)
@@ -102,17 +102,25 @@ def main():
             #print(qv[index][1], theta_t[index][0], index)
 
 
-    f = open("output.txt", "w")
+    f = open("robotPath.txt", "w")
+    
+    for index, item in enumerate(qrv, start=0):  
+        #X|Y|HEADING|VELOCITY 
+        f.write(str(qr[index][0]) + '|' + str(qr[index][1]) + '|' + str(theta_r[index][0]) + '|' + str(pr[index][0]) + '\n')
+    
+    f.close()
+
+    f = open("targetPath.txt", "w")
     
     for index, item in enumerate(qrv, start=0):   
-        f.write(str(qr[index][0]) + '|' + str(qr[index][1]) + '|' + str(theta_r[index][0]) + '\n')
+        f.write(str(qv[index][0]) + '|' + str(qv[index][1]) + '|' + str(theta_t[index][0]) + '\n')
     
-    f.close()   
+    f.close()    
 
             
 
   
-    print(prv[0])
+    print("Data for target and robot written")
 
 
 def CompMagSqr(vec):
