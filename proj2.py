@@ -25,6 +25,9 @@ def main():
     Lambda = 8.5 #Scaling factor  of attractive potential field
     pr_max = 50 #Max robot velocity
     t = np.arange(0,10,delta_t) #Total simulation time
+
+    #Set Error
+    err = np.zeros((len(t), n))
     
     #Set Virtual Target
     qv = np.zeros((len(t), n)) #Initial positions of virtual target
@@ -51,7 +54,7 @@ def main():
     noise_mean = 0.5
     noise_std = 0.5
 
-    #Set Virtual Target Data
+    #Setup Virtual Target Data
     for index, item in enumerate(qv, start=0):   
         if index == 0:
             pass
@@ -64,8 +67,6 @@ def main():
             #Set heading of virtual target
             theta_t[index] = np.arctan2(qv_y, qv_x)
 
-
-            #print(qv[index][1], theta_t[index][0], index)
     
     #Compute relative data
     for index, item in enumerate(qrv, start=0):   
@@ -80,7 +81,6 @@ def main():
             Hrv = np.arctan2(yrv, xrv)
             #Compute relative position
             qrv[index] = qv[index] - qr[index-1]
-           # print(qr[index-1])
             
             #Compute velocity of the robot
             V_Left = CompMagSqr(pv)
@@ -94,14 +94,26 @@ def main():
             theta_r[index] = Hrv + np.arcsin(arcSin)
 
             #Update position of robot 
-            # theta_r[index-1]
             qr[index] = qr[index - 1] + pr[index] * delta_t * np.array([np.cos(theta_r[index-1]), np.sin(theta_r[index-1])]).reshape(2,)
             prv[index] = pv - pr[index]
 
+            #Compute error
+            no = qv[index] - qr[index]
+            err[index] = np.linalg.norm(no)
 
-            #print(qv[index][1], theta_t[index][0], index)
+
+    #Write error data to a file
+    f = open("error.txt", "w")
+    
+    for index, item in enumerate(qrv, start=0):  
+        #X|Y|HEADING|VELOCITY 
+        f.write(str(err[index][0]) + '\n')
+    
+    f.close()
+            
 
 
+    #Write robot data to a file
     f = open("robotPath.txt", "w")
     
     for index, item in enumerate(qrv, start=0):  
@@ -110,17 +122,16 @@ def main():
     
     f.close()
 
+    #Write target data to a file
     f = open("targetPath.txt", "w")
     
     for index, item in enumerate(qrv, start=0):   
         f.write(str(qv[index][0]) + '|' + str(qv[index][1]) + '|' + str(theta_t[index][0]) + '\n')
     
     f.close()    
-
-            
-
+   
   
-    print("Data for target and robot written")
+    print("Data for target, robot and error written")
 
 
 def CompMagSqr(vec):
