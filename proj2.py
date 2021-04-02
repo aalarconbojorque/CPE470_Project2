@@ -86,6 +86,7 @@ def main():
             V_Middle = 2*Lambda*CompMag(qrv[index])*CompMag(pv)*CosSub(theta_t[index], Hrv)
             V_Right = np.square(Lambda)*CompMagSqr(qrv[index])
             pr[index] = np.sqrt(V_Left + V_Middle + V_Right)
+            pr[index] = np.minimum(pr[index], pr_max)
 
             #Computer orientation of robot
             arcSin = (CompMag(pv)*np.sin(theta_r[index]- Hrv)) / CompMag(pr[index])
