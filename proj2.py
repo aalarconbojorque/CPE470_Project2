@@ -27,7 +27,7 @@ def main():
     delta_t = 0.05 #TimeStep
     Lambda = 8.5 #Scaling factor  of attractive potential field
     pr_max = 50 #Max robot velocity
-    t = np.arange(0,10,delta_t) #Total simulation time
+    t = np.arange(0,20,delta_t) #Total simulation time 0-10 but 0-20 for sine wave
 
     #Set Error
     err = np.zeros((len(t), n))
@@ -66,14 +66,14 @@ def main():
             # qv_y = 30 + 15 * np.sin(t[index])
             
 
-            #Set linear target tragectory (position)
+            #Set linear target tragectory (position) WITHOUT NOISE
             # qv_x = 60 - 15 * t[index]
             # qv_y = 30 + 15 * t[index]
             
 
-            #Set sin wave target stragectory
+            #Set sin wave target stragectory WITHOUT NOISE
             #qv[index] = 50* np.sin(t[index]+5)+65
-            qv_x = t[index]+20
+            qv_x = t[index]+10
             qv_y = 15* np.sin(qv_x) +10
 
             #Set heading of virtual target
