@@ -64,14 +64,20 @@ def main():
             # #Set circular target tragectory (position)
             # qv_x = 60 - 15 * np.cos(t[index])
             # qv_y = 30 + 15 * np.sin(t[index])
-            # qv[index] = np.array([qv_x, qv_y]).reshape(2,)
+            
 
             #Set linear target tragectory (position)
-            qv_x = 60 - 15 * t[index]
-            qv_y = 30 + 15 * t[index]
-            qv[index] = np.array([qv_x, qv_y]).reshape(2,)
+            # qv_x = 60 - 15 * t[index]
+            # qv_y = 30 + 15 * t[index]
+            
+
+            #Set sin wave target stragectory
+            #qv[index] = 50* np.sin(t[index]+5)+65
+            qv_x = t[index]+20
+            qv_y = 15* np.sin(qv_x) +10
 
             #Set heading of virtual target
+            qv[index] = np.array([qv_x, qv_y]).reshape(2,)
             theta_t[index] = np.arctan2(qv_y, qv_x)
 
     
@@ -123,7 +129,7 @@ def main():
         f.write(str(qr[index][0]) + '|' + str(qr[index][1]) + '|' + str(theta_r[index][0]) + '|' + str(pr[index][0]) + '\n')  
     f.close()
 
-    #Write target data to a file
+    
     f = open("targetPath.txt", "w")    
     for index, item in enumerate(qrv, start=0):
         #X|Y|HEADING    
@@ -131,6 +137,8 @@ def main():
     f.close()    
   
     print("Data for target, robot and error written")
+
+    
 
 # ----------------------------------------------------------------------------
 # FUNCTION NAME:     CompMagSqr()
