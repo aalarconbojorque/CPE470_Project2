@@ -7,7 +7,11 @@
 # MODIFICATION HISTORY:
 # Author             Date           Modification(s)
 # ----------------   -----------    ---------------
-# Andy Alarcon       04-01-2021     1.0 ... setup dev environment, imported NumPy
+# Andy Alarcon       04-01-2021     1.0 ... Setup dev environment, imported NumPy
+# Andy Alarcon       04-03-2021     1.1 ... Initalized variables
+# Andy Alarcon       04-05-2021     1.2 ... Implemented Equations
+# Andy Alarcon       04-06-2021     1.3 ... Fixed bug that resulted innaccurate meas
+# Andy Alarcon       04-07-2021     1.4 ... Added error and file writing 
 # -----------------------------------------------------------------------------
 
 import numpy.matlib as m
@@ -108,7 +112,7 @@ def main():
     #Write error data to a file
     f = open("error.txt", "w")  
     for index, item in enumerate(qrv, start=0):  
-        #X|Y|HEADING|VELOCITY 
+        #Error
         f.write(str(err[index][0]) + '\n')  
     f.close()
             
@@ -121,7 +125,8 @@ def main():
 
     #Write target data to a file
     f = open("targetPath.txt", "w")    
-    for index, item in enumerate(qrv, start=0):   
+    for index, item in enumerate(qrv, start=0):
+        #X|Y|HEADING    
         f.write(str(qv[index][0]) + '|' + str(qv[index][1]) + '|' + str(theta_t[index][0]) + '\n')  
     f.close()    
   
@@ -154,12 +159,5 @@ def CosSub(theta_1, theta_2):
     theta_3 = np.absolute(theta_3)
     return theta_3
     
-
-    
-
-
-    
-
-
 if __name__ == "__main__":
     main()
