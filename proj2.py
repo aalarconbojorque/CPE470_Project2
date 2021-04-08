@@ -12,7 +12,7 @@
 # Andy Alarcon       04-05-2021     1.2 ... Implemented Equations
 # Andy Alarcon       04-06-2021     1.3 ... Fixed bug that resulted innaccurate meas
 # Andy Alarcon       04-07-2021     1.4 ... Added error and file writing 
-# Andy Alarcon       04-09-2021     1.4 ... Calcualted data sets
+# Andy Alarcon       04-09-2021     1.5 ... Calcualted data sets
 # -----------------------------------------------------------------------------
 
 import numpy.matlib as m
@@ -71,20 +71,21 @@ def main():
             # qv_y = 30 + 15 * t[index]
             
             #Set sin wave target stragectory WITHOUT NOISE
-            # qv_x = t[index] + 10
-            # qv_y = 15* np.sin(qv_x) + 10
+            qv_x = t[index] + 10
+            qv_y = 15* np.sin(qv_x) + 10
 
             #Set linear target tragectory (position) WITH NOISE
             # qv_x = 60 - 15 * t[index] + noise_std * np.random.randn() + noise_mean
             # qv_y = 30 + 15 * t[index] + noise_std * np.random.randn() + noise_mean
 
             #Set sin wave target stragectory WITH NOISE
-            qv_x = t[index] + 10 + noise_std * np.random.randn() + noise_mean
-            qv_y = 15* np.sin(qv_x) + 10 + noise_std * np.random.randn() + noise_mean
+            # qv_x = t[index] + 10 + noise_std * np.random.randn() + noise_mean
+            # qv_y = 15* np.sin(qv_x) + 10 + noise_std * np.random.randn() + noise_mean
 
             #Set heading of virtual target
             qv[index] = np.array([qv_x, qv_y]).reshape(2,)
-            theta_t[index] = np.arctan2(qv_y, qv_x)
+            qt_diff = qv[index] - qv[index - 1]
+            theta_t[index] = np.arctan2(qt_diff[1], qt_diff[0])
 
     
     #Compute relative data
@@ -114,7 +115,10 @@ def main():
 
             #Update position of robot 
             qr[index] = qr[index - 1] + pr[index] * delta_t * np.array([np.cos(theta_r[index-1]), np.sin(theta_r[index-1])]).reshape(2,)
-            prv[index] = pv - pr[index]
+
+            #Compute relative velocity
+            prv[index] = np.array([pv*np.cos(theta_t[index]) - pr[index]*np.cos(theta_r[index]), 
+                      pv*np.sin(theta_t[index]) - pr[index]*np.sin(theta_r[0])]).reshape(2,) 
 
             #Compute error
             no = qv[index] - qr[index]
@@ -135,7 +139,7 @@ def main():
         f.write(str(qr[index][0]) + '|' + str(qr[index][1]) + '|' + str(theta_r[index][0]) + '|' + str(pr[index][0]) + '\n')  
     f.close()
 
-    
+    #Write target data to a file
     f = open("targetPath.txt", "w")    
     for index, item in enumerate(qrv, start=0):
         #X|Y|HEADING    
