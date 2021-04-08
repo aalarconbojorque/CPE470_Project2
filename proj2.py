@@ -12,7 +12,7 @@
 # Andy Alarcon       04-05-2021     1.2 ... Implemented Equations
 # Andy Alarcon       04-06-2021     1.3 ... Fixed bug that resulted innaccurate meas
 # Andy Alarcon       04-07-2021     1.4 ... Added error and file writing 
-# Andy Alarcon       04-09-2021     1.5 ... Calcualted data sets
+# Andy Alarcon       04-09-2021     1.5 ... Calcualted data sets, corrected heading of target
 # -----------------------------------------------------------------------------
 
 import numpy.matlib as m
@@ -71,16 +71,16 @@ def main():
             # qv_y = 30 + 15 * t[index]
             
             #Set sin wave target stragectory WITHOUT NOISE
-            qv_x = t[index] + 10
-            qv_y = 15* np.sin(qv_x) + 10
+            # qv_x = t[index] + 10
+            # qv_y = 15* np.sin(qv_x) + 10
 
             #Set linear target tragectory (position) WITH NOISE
             # qv_x = 60 - 15 * t[index] + noise_std * np.random.randn() + noise_mean
             # qv_y = 30 + 15 * t[index] + noise_std * np.random.randn() + noise_mean
 
             #Set sin wave target stragectory WITH NOISE
-            # qv_x = t[index] + 10 + noise_std * np.random.randn() + noise_mean
-            # qv_y = 15* np.sin(qv_x) + 10 + noise_std * np.random.randn() + noise_mean
+            qv_x = t[index] + 10 + noise_std * np.random.randn() + noise_mean
+            qv_y = 15* np.sin(qv_x) + 10 + noise_std * np.random.randn() + noise_mean
 
             #Set heading of virtual target
             qv[index] = np.array([qv_x, qv_y]).reshape(2,)
